@@ -23,3 +23,16 @@ My Project at CERN as part of openlab summer student projects
    * create a docker image for NXCALS (with their software) and submit a spark job to read the NXCALS data with all dependencies encapsulated in such docker
  * Evaluate HDFS router-based federation
    * ref: https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-hdfs-rbf/HDFSRouterFederation.html
+
+
+#### TPC-DS benchmarking in Spark using Spark SQL workloads
+
+* Open spark-shell: <br/>
+`spark-shell --conf spark.sql.catalogImplementation=in-memory --conf spark.security.credentials.hive.enabled=false --master yarn --num-executors 84 --driver-memory 16g --executor-memory 48g --executor-cores 4 --driver-cores 4 --jars /tmp/nseidan/spark-sql-perf/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar`
+
+* Generate TPC-DS dataset of 1TB: <br/>
+`val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/tmp/nseidan/tpcds-kit/tools", "1000")`
+
+* Use json format and apply genData() function:<br/>
+`tables.genData("/user/nseidan/1tb-json-rs-6-3", "json", true, true, true, false, "", 100)`
+
